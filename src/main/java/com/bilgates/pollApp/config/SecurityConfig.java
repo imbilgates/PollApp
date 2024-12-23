@@ -19,8 +19,12 @@ public class SecurityConfig {
         htttp
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/polls/**",  "/oauth2/**", "/login/**").permitAll()
-                        .anyRequest().authenticated())
+                        auth.requestMatchers(
+                                        "/api/polls/**",
+                                        "/login/oauth2/authorization/**",
+                                        "/oauth2/**"
+                                ).permitAll()
+                                .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("http://localhost:3000/polls", true))
                 .logout((logout) -> {
                     logout.logoutUrl("/logout");
