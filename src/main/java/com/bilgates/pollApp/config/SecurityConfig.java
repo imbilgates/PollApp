@@ -22,7 +22,8 @@ public class SecurityConfig {
                         auth.requestMatchers(
                                         "/api/polls/**",
                                         "/login/oauth2/authorization/**",
-                                        "/oauth2/**"
+                                        "/oauth2/**",
+                                        "/login/oauth2/code/**"
                                 ).permitAll()
                                 .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("http://localhost:3000/polls", true))
