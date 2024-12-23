@@ -15,15 +15,8 @@ public class UserController {
 
     @GetMapping("/user-info")
     public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
-        if (principal != null) {
-            // Log the principal to see if the attributes are correctly populated
             System.out.println(principal.getAttributes());
-            return principal.getAttributes();  // Return user attributes if authenticated
-        }
-        return Map.of("error", "User not authenticated"); // Return error if not authenticated
+            return principal.getAttributes();
     }
-
-
-
 
 }
