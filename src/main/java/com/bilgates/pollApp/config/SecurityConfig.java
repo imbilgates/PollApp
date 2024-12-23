@@ -1,6 +1,5 @@
 package com.bilgates.pollApp.config;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -25,8 +24,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
-                        auth.anyRequest().permitAll()
-                                .requestMatchers("/user-info").authenticated())
+                        auth.requestMatchers("/user-info").authenticated()  // Specify that /user-info requires authentication
+                                .anyRequest().permitAll())  // Allow all other requests without authentication
                 .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("http://localhost:3000/polls", true))
                 .logout((logout) -> {
                     logout.logoutUrl("/logout");
