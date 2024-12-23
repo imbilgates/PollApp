@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/polls")
-@CrossOrigin(origins = "http://localhost:3000")
+
+
 public class PollController {
 
     private final PollService pollService;
