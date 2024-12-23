@@ -21,7 +21,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(
                                         "/api/polls/**",
-                                        "/login/oauth2/authorization/**",
+                                        "/oauth2/authorization/**",
                                         "/oauth2/**",
                                         "/user-info/**",
                                         "/auth/**"
