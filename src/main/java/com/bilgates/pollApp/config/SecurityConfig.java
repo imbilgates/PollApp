@@ -25,9 +25,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/polls/**"
-                                ).permitAll()
-                                .anyRequest().authenticated())
+                        auth.anyRequest().permitAll()
+                                .requestMatchers("/user-info").authenticated())
                 .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("http://localhost:3000/polls", true))
                 .logout((logout) -> {
                     logout.logoutUrl("/logout");
@@ -41,7 +40,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource(){
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
         corsConfiguration.addAllowedHeader("*");
