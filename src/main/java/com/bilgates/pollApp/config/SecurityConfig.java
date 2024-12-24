@@ -2,6 +2,7 @@ package com.bilgates.pollApp.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.session.DefaultCookieSerializerCustomizer;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -43,8 +44,13 @@ public class SecurityConfig {
 
 
 
-
-
+    @Bean
+    public ServletContextInitializer cookieInitializer(){
+        return servletContext -> {
+            servletContext.getSessionCookieConfig().setSecure(true);
+            servletContext.getSessionCookieConfig().setHttpOnly(true);
+        };
+    }
 
 
 
