@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class UserProfile {
-    private String username;
-    private String userPicture;
+    private String user;
+    private String picture;
+    private String email;
     }
