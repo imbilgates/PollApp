@@ -13,8 +13,8 @@ public class WebConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/user-info")
-                        .allowedOrigins("http://localhost:3000")
+                registry.addMapping("/**")
+                        .allowedOrigins("https://pollwebapp.netlify.app")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

@@ -26,11 +26,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/user-info").authenticated()  // Specify that /user-info requires authentication
                                 .anyRequest().permitAll())  // Allow all other requests without authentication
-                .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("http://localhost:3000/polls", true))
+                .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("https://pollwebapp.netlify.app/polls", true))
                 .logout((logout) -> {
                     logout.logoutUrl("/logout");
                     logout.invalidateHttpSession(true);
-                    logout.logoutSuccessUrl("http://localhost:3000/");
+                    logout.logoutSuccessUrl("https://pollwebapp.netlify.app");
                     logout.clearAuthentication(true);
                     logout.deleteCookies("auth_code", "JSESSIONID", "refreshToken", "Authorization");
                 });
@@ -41,7 +41,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfiguration.setAllowedOrigins(List.of("https://pollwebapp.netlify.app"));
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.setAllowCredentials(true);
