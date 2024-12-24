@@ -1,5 +1,7 @@
 package com.bilgates.pollApp.config;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.session.DefaultCookieSerializerCustomizer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
@@ -50,6 +52,19 @@ public class SecurityConfig {
             servletContext.getSessionCookieConfig().setSecure(true);
             servletContext.getSessionCookieConfig().setHttpOnly(true);
         };
+    }
+
+
+
+    public void createSessionCookie(HttpServletResponse response, String sessionId) {
+        Cookie cookie = new Cookie("JSESSIONID", sessionId);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+
+        // Add the SameSite attribute manually
+        response.addHeader("Set-Cookie",
+                cookie.getName() + "=" + cookie.getValue() + "; Path=" + cookie.getPath() + "; HttpOnly; Secure; SameSite=None");
     }
 
 
