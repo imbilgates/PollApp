@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "${FRONTEND_URL}")
+@CrossOrigin(origins = "${FRONTEND_URL}", allowCredentials = "true")
 public class UserController {
 
 
