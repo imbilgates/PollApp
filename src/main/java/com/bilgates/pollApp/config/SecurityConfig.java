@@ -1,6 +1,7 @@
 package com.bilgates.pollApp.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.session.DefaultCookieSerializerCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -20,10 +21,10 @@ public class SecurityConfig {
     private String frontendUrl;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity htttp) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        htttp
-                .cors(Customizer.withDefaults())
+        http
+                .cors(cors -> cors.disable())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/user-info").authenticated()  // Specify that /user-info requires authentication
@@ -37,8 +38,14 @@ public class SecurityConfig {
                     logout.deleteCookies("auth_code", "JSESSIONID", "refreshToken", "Authorization");
                 });
 
-        return htttp.build();
+        return http.build();
     }
+
+
+
+
+
+
 
 
 }
