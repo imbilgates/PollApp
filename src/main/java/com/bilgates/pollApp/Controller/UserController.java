@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "https://pollwebapp.netlify.app")
+@CrossOrigin(origins = "${FRONTEND_URL}")
 public class UserController {
 
 
