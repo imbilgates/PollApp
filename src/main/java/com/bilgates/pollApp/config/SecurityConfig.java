@@ -58,32 +58,4 @@ public class SecurityConfig {
     }
 
 
-
-    public void createSessionCookie(HttpServletResponse response, String sessionId) {
-        Cookie cookie = new Cookie("JSESSIONID", sessionId);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-
-        // Add the SameSite attribute manually
-        response.addHeader("Set-Cookie",
-                cookie.getName() + "=" + cookie.getValue() + "; Path=" + cookie.getPath() + "; HttpOnly; Secure; SameSite=None");
-    }
-
-
-        @Bean
-        public CorsConfigurationSource corsConfigurationSource() {
-            CorsConfiguration config = new CorsConfiguration();
-            config.addAllowedOrigin(frontendUrl); // Your front-end URL
-            config.addAllowedMethod("*"); // Allow all HTTP methods
-            config.addAllowedHeader("*"); // Allow all headers
-            config.setAllowCredentials(true); // Allow cookies (JSESSIONID)
-
-            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            source.registerCorsConfiguration("/**", config);
-            return source;
-        }
-
-
-
 }
