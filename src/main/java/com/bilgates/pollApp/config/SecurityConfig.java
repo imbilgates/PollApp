@@ -14,6 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -66,6 +69,20 @@ public class SecurityConfig {
         response.addHeader("Set-Cookie",
                 cookie.getName() + "=" + cookie.getValue() + "; Path=" + cookie.getPath() + "; HttpOnly; Secure; SameSite=None");
     }
+
+
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+            CorsConfiguration config = new CorsConfiguration();
+            config.addAllowedOrigin(frontendUrl); // Your front-end URL
+            config.addAllowedMethod("*"); // Allow all HTTP methods
+            config.addAllowedHeader("*"); // Allow all headers
+            config.setAllowCredentials(true); // Allow cookies (JSESSIONID)
+
+            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration("/**", config);
+            return source;
+        }
 
 
 
