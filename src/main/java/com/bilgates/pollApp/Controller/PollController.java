@@ -20,7 +20,6 @@ public class PollController {
 
     private final PollService pollService;
 
-
     public PollController(PollService pollService) {
         this.pollService = pollService;
     }
@@ -42,12 +41,39 @@ public class PollController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-//    POST VOTE
     @PostMapping("/vote")
-    public void vote(@RequestBody Vote vote){
-        pollService.vote(vote.getPollId(), vote.getOptionIndex());
-    }
+    public ResponseEntity<String> vote(@RequestBody Vote vote, Authentication authentication) {
 
+        if (authentication != null && authentication.getPrincipal() instanceof OAuth2User) {
+            OAuth2User principal = (OAuth2User) authentication.getPrincipal();
+
+            String username = null;
+            String picture = null;
+            String email = null;
+
+            // Check if it's Google
+            if (principal.getAttributes().containsKey("name")) {
+                username = (String) principal.getAttribute("name");
+            }
+            // Check if it's GitHub
+            else if (principal.getAttributes().containsKey("login")) {
+                username = (String) principal.getAttribute("login");
+            }
+
+            // Optionally retrieve email and picture
+            picture = (String) principal.getAttribute("picture");
+            email = (String) principal.getAttribute("email");
+
+            if (username != null) {
+                pollService.vote(vote.getPollId(), vote.getOptionIndex(), username);
+                return ResponseEntity.ok("Vote registered successfully");
+            } else {
+                return ResponseEntity.badRequest().body("Username not found");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated");
+        }
+    }
 
     @GetMapping("/by-email")
     public ResponseEntity<List<Poll>> getPollsByEmail(Authentication authentication) {
@@ -55,12 +81,10 @@ public class PollController {
             OAuth2User principal = (OAuth2User) authentication.getPrincipal();
             String authenticatedEmail = (String) principal.getAttribute("email");
 
-            // Fetch polls created by the authenticated user
+
             List<Poll> polls = pollService.getPollsByEmail(authenticatedEmail);
             return ResponseEntity.ok(polls);
         }
-
-        // Return 401 Unauthorized if authentication fails
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
@@ -73,7 +97,4 @@ public class PollController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found if poll doesn't exist
     }
-
-
-
 }

@@ -21,15 +21,4 @@ public class UserController {
             return principal.getAttributes();
     }
 
-
-    @GetMapping("/user-details")
-    public UserProfile user(Authentication authentication) {
-        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-        UserProfile userProfile = new UserProfile();
-        userProfile.setUser(oAuth2User.getAttribute("name"));
-        userProfile.setPicture(oAuth2User.getAttribute("avatar_url"));
-        userProfile.setEmail(oAuth2User.getAttribute("email"));
-        return userProfile;
-    }
-
 }

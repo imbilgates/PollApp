@@ -65,29 +65,32 @@ public class PollService {
         return pollRepository.findByEmail(email);
     }
 
-    public void vote(Long pollId, int optionIndex) {
-
-//        Get Poll from DB
+    public void vote(Long pollId, int optionIndex, String username) {
         Poll poll = pollRepository.findById(pollId).orElseThrow(
-                ()-> new RuntimeException("Poll Not Founded")
+                () -> new RuntimeException("Poll Not Found")
         );
 
-//        Get ALl Options
         List<OptionVote> options = poll.getOptions();
 
-//        Validation
-        if(optionIndex < 0 || optionIndex >= options.size()){
+        if (optionIndex < 0 || optionIndex >= options.size()) {
             throw new IllegalArgumentException("Invalid Option Index");
         }
-//        Get Selected Option
+
         OptionVote selectedOption = options.get(optionIndex);
 
-//        Inc Selected Option
-        selectedOption.setVoteCount(selectedOption.getVoteCount() + 1);
+        if (selectedOption.getVoters().contains(username)) {
+            // Unvote
+            selectedOption.getVoters().remove(username);
+            selectedOption.setVoteCount(selectedOption.getVoteCount() - 1);
+        } else {
+            // Vote
+            selectedOption.getVoters().add(username);
+            selectedOption.setVoteCount(selectedOption.getVoteCount() + 1);
+        }
 
-//        save repo
         pollRepository.save(poll);
     }
+
 
     public void deletePoll(Long id) {
         pollRepository.deleteById(id);
